@@ -1,14 +1,12 @@
 # Cross-Domain Few-Shot Learning (CD-FSL) Benchmark
 
 ### Website
-#### https://www.learning-with-limited-labels.com/
+#### https://l2id.github.io/challenge_classification.html
 
-### LeaderBoard
-#### https://www.learning-with-limited-labels.com/challenge
 
 ### Paper
 
-Please cite the following paper in use of this evaluation framework: https://arxiv.org/pdf/1912.07200.pdf
+Please cite the following paper in use of this evaluation framework:
 
 ```
 @inproceedings{guo2020broader,
@@ -21,7 +19,14 @@ Please cite the following paper in use of this evaluation framework: https://arx
 
 ## Introduction
 
-The Cross-Domain Few-Shot Learning (CD-FSL) challenge benchmark includes data from the CropDiseases [1], EuroSAT [2], ISIC2018 [3-4], and ChestX [5] datasets, which covers plant disease images, satellite images, dermoscopic images of skin lesions, and X-ray images, respectively. The selected datasets reflect real-world use cases for few-shot learning since collecting enough examples from above domains is often difficult, expensive, or in some cases not possible. In addition, they demonstrate the following spectrum of readily quantifiable domain shifts from ImageNet: 1) CropDiseases images are most similar as they include perspective color images of natural elements, but are more specialized than anything available in ImageNet, 2) EuroSAT images are less similar as they have lost perspective distortion, but are still color images of natural scenes, 3) ISIC2018 images are even less similar as they have lost perspective distortion and no longer represent natural scenes, and 4) ChestX images are the most dissimilar as they have lost perspective distortion, all color, and do not represent natural scenes.
+We will have three tracks investigating cross-domain, multi-source settings as well as discrimination across a larger number of classes, bridging the gap between few-shot learning, domain adaptation, and semi-supervised learning. All tracks will include multiple sources and the use of unlabeled data to support semi-supervised algorithms. The Cross-Domain Few-Shot Learning (CD-FSL) challenge benchmark includes data from various domains. The selected datasets reflect real-world use cases for few-shot learning since collecting enough examples from above domains is often difficult, expensive, or in some cases not possible. 
+
+
+
+# <span style="color:red">Track 1: Cross-domain, *small* scale</span>
+
+## Description
+This setting is similar as the previous VL3 workshop challenge (https://www.learning-with-limited-labels.com/challenge), supporting teams that would like to continue development for cross-domain few-shot learning. However, we will have <b>multiple</b> sources rather than relying on ImageNet solely, with no explicit label overlap between sources and target. These additional sources remain consistent with prior literature, allowing results to be directly comparable to prior results (https://arxiv.org/abs/1912.07200)
 
 ## Datasets
 The following datasets are used for evaluation in this challenge:
@@ -29,11 +34,7 @@ The following datasets are used for evaluation in this challenge:
 ### Source domain: 
 
 * miniImageNet 
-<br/><br/>
-
-**The datasets below are used for relicating the results of the *Multi-model Selection* in the paper, for the challenge, only pre-trained model on miniImageNet is allowed**
-
-* CUB
+* CUB (http://www.vision.caltech.edu/visipedia/CUB-200.html)
 * CIFAR100
 * Caltech256
 * DTD (<https://www.robots.ox.ac.uk/~vgg/data/dtd/>)
@@ -63,11 +64,97 @@ The following datasets are used for evaluation in this challenge:
     Home: https://www.kaggle.com/nih-chest-xrays/data
 
     Direct: command line `kaggle datasets download -d nih-chest-xrays/data`
+    
+
+# <span style="color:red">Track 2: Cross-domain, *Large* scale</span>
+
+## Description
+In this track we add additional datasets to both source and target datasets for participants with sufficient compute resources. Importantly, in this task, in addition to the multiple sources, we provide <b>multiple tasks</b> from which to draw source data or models. 
+
+## Datasets
+The following datasets are used for evaluation in this challenge:
+
+### Source domain: 
+
+* miniImageNet 
+* CUB (http://www.vision.caltech.edu/visipedia/CUB-200.html)
+* CIFAR100
+* Caltech256
+* DTD (<https://www.robots.ox.ac.uk/~vgg/data/dtd/>)
+* DomainNet, 
+* COCO, 
+* PASCAL, 
+* KITTI, 
+* Cityscapes (*any version or task).
+
+
+### Target domains: 
+
+* **EuroSAT**:
+
+    Home: http://madm.dfki.de/downloads
+
+    Direct: http://madm.dfki.de/files/sentinel/EuroSAT.zip
+
+* **ISIC2018**:
+
+    Home: http://challenge2018.isic-archive.com
+
+    Direct (must login): https://challenge.isic-archive.com/data#2018
+
+* **Plant Disease**:
+
+    Home: https://www.kaggle.com/saroz014/plant-disease/
+
+    Direct: command line `kaggle datasets download -d plant-disease/data`
+
+* **ChestX-Ray8**:
+
+    Home: https://www.kaggle.com/nih-chest-xrays/data
+
+    Direct: command line `kaggle datasets download -d nih-chest-xrays/data`
+
+* **PatchCamelyon**:
+
+    Home: 
+
+    Direct: 
+
+
+* **KenyanFood13**:
+
+    Home: 
+
+    Direct: 
+
+* **IP102**:
+
+    Home: 
+
+    Direct: 
+
+* **Bark-101**:
+
+    Home: 
+
+    Direct: 
+    
+* **OmniArt**:
+
+    Home: 
+
+    Direct: 
+
+* **EuroSAT Multispectral**:
+
+    Home: 
+
+    Direct:
+
 
 ## General information
 
 * **No meta-learning in-domain**
-* Only ImageNet based models or meta-learning allowed.
 * 5-way classification
 * n-shot, for varying n per dataset
 * 600 randomly selected few-shot 5-way trials up to 50-shot (scripts provided to generate the trials)
@@ -76,6 +163,8 @@ The following datasets are used for evaluation in this challenge:
 * **For generating the trials for evaluation, please refer to finetune.py and the examples below**
 
 ## Specific Tasks:
+
+### Tasks for Track 1 and Track 2
 
 **EuroSAT**
 
@@ -93,10 +182,32 @@ The following datasets are used for evaluation in this challenge:
 
   • Shots: n = {5, 20, 50}
 
+### Additional Tasks for Track 2
 
-## Unsupervised Track
+**PatchCamelyon**
 
-An optional second track has been included in this challenge that allows the use of a subset of unlabeled images from each dataset for study of un/self/semi-supervised learning methods. For learning and evaluation within each dataset, the images listed in text files contained in the `unsupervised-track` subfolder specific to each dataset may be used for such learning methods. Please see the website for additional information. 
+  • Shots: n = {5, 20, 50}
+
+**KenyanFood13**
+
+  • Shots: n = {5, 20, 50}
+ 
+**IP102**
+
+  • Shots: n = {5, 20, 50}
+  
+**Bark-101**
+
+  • Shots: n = {5, 20, 50} 
+  
+**OmniArt**
+
+  • Shots: n = {5, 20, 50} 
+  
+ **EuroSAT Multispectral**
+
+  • Shots: n = {5, 20, 50} 
+
 
 ## Enviroment
 
@@ -108,7 +219,7 @@ h5py 2.9.0
 
 ## Steps
 
-1. Download the datasets for evaluation (EuroSAT, ISIC2018, Plant Disease, ChestX-Ray8) using the above links.
+1. Download the datasets for specific tracks for evaluation using the above links.
 
 2. Download miniImageNet using <https://drive.google.com/file/d/1uxpnJ3Pmmwl-6779qiVJ5JpWwOGl48xt/view?usp=sharing>
 
@@ -188,6 +299,8 @@ h5py 2.9.0
     • *n_way: number of shots*
 
     • *n_support: number of support images per class*
+
+
 
 ## References
 
