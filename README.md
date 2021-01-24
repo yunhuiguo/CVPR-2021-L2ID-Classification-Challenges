@@ -1,4 +1,5 @@
-# Cross-Domain Few-Shot Learning (CD-FSL) Benchmark
+#  Learning from Limited and Imperfect Data (L2ID): Classification Challenges
+
 
 ### Website
 #### https://l2id.github.io/challenge_classification.html
