@@ -20,8 +20,7 @@ Please cite the following paper in use of this evaluation framework:
 
 ## Introduction
 
-We will have three tracks investigating cross-domain, multi-source settings as well as discrimination across a larger number of classes, bridging the gap between few-shot learning, domain adaptation, and semi-supervised learning. All tracks will include multiple sources and the use of unlabeled data to support semi-supervised algorithms. The Cross-Domain Few-Shot Learning (CD-FSL) challenge benchmark includes data from various domains. The selected datasets reflect real-world use cases for few-shot learning since collecting enough examples from above domains is often difficult, expensive, or in some cases not possible. 
-
+We will have three tracks investigating *cross-domain*, *multi-source settings* as well as *discrimination across a larger number of classes*, bridging the gap between few-shot learning, domain adaptation, and semi-supervised learning. All tracks will include multiple sources and the use of unlabeled data to support semi-supervised algorithms. 
 
 
 # <span style="color:red">Track 1: Cross-domain, *small* scale</span>
@@ -82,11 +81,11 @@ The following datasets are used for evaluation in this challenge:
 * CIFAR100
 * Caltech256
 * DTD (<https://www.robots.ox.ac.uk/~vgg/data/dtd/>)
-* DomainNet, 
-* COCO, 
-* PASCAL, 
-* KITTI, 
-* Cityscapes (*any version or task).
+* DomainNet (http://ai.bu.edu/M3SDA/#dataset)
+* COCO (2017 Train Images) (https://cocodataset.org/#download)
+* PASCAL (http://host.robots.ox.ac.uk/pascal/VOC/voc2012/index.html#data)
+* KITTI (http://www.cvlibs.net/datasets/kitti/eval_object.php?obj_benchmark=2d)
+* Cityscapes (*any version or task)  (https://www.cityscapes-dataset.com/dataset-overview/#class-definitions)
 
 
 ### Target domains: 
@@ -117,40 +116,23 @@ The following datasets are used for evaluation in this challenge:
 
 * **PatchCamelyon**:
 
-    Home: 
-
-    Direct: 
+    Home: https://github.com/basveeling/pcam (level_2_split_train)
 
 
 * **KenyanFood13**:
 
-    Home: 
+    Home: https://drive.google.com/file/d/1CHnTy4XqGowT2chCBBxZ8rdYxMC1bwTc/view (training image)
 
-    Direct: 
 
 * **IP102**:
 
-    Home: 
-
-    Direct: 
+    Home: https://github.com/xpwu95/IP102 (training image)
+    
 
 * **Bark-101**:
 
-    Home: 
+    Home: http://eidolon.univ-lyon2.fr/~remi1/Bark-101/ (training image) 
 
-    Direct: 
-    
-* **OmniArt**:
-
-    Home: 
-
-    Direct: 
-
-* **EuroSAT Multispectral**:
-
-    Home: 
-
-    Direct:
 
 
 ## General information
@@ -158,7 +140,7 @@ The following datasets are used for evaluation in this challenge:
 * **No meta-learning in-domain**
 * 5-way classification
 * n-shot, for varying n per dataset
-* 600 randomly selected few-shot 5-way trials up to 50-shot (scripts provided to generate the trials)
+* 100 randomly selected few-shot 5-way trials up to 50-shot (scripts provided to generate the trials)
 * Average accuracy across all trials reported for evaluation.
 
 * **For generating the trials for evaluation, please refer to finetune.py and the examples below**
@@ -199,17 +181,9 @@ The following datasets are used for evaluation in this challenge:
   
 **Bark-101**
 
-  • Shots: n = {5, 20, 50} 
+  • Shots: n = {5} 
   
-**OmniArt**
-
-  • Shots: n = {5, 20, 50} 
-  
- **EuroSAT Multispectral**
-
-  • Shots: n = {5, 20, 50} 
-
-
+ 
 ## Enviroment
 
 Python 3.5.5
@@ -224,16 +198,9 @@ h5py 2.9.0
 
 2. Download miniImageNet using <https://drive.google.com/file/d/1uxpnJ3Pmmwl-6779qiVJ5JpWwOGl48xt/view?usp=sharing>
 
-3. Download CUB if multi-model selection is used.
+3. Change configuration file `./configs.py` to reflect the correct paths to each dataset. Please see the existing example paths for information on which subfolders these paths should point to.
 
-```bash
-    Change directory to ./filelists/CUB
-    run source ./download_CUB.sh
-```
-
-4. Change configuration file `./configs.py` to reflect the correct paths to each dataset. Please see the existing example paths for information on which subfolders these paths should point to.
-
-5. Train base models on miniImageNet
+4. Train base models on miniImageNet
 
     • *Standard supervised learning on miniImageNet*
 
@@ -247,7 +214,7 @@ h5py 2.9.0
         python ./train.py --dataset miniImageNet --model ResNet10  --method protonet --n_shot 5 --train_aug
     ```
 
-6. Save features for evaluation (optional, if there is no need to adapt the features during testing) 
+5. Save features for evaluation (optional, if there is no need to adapt the features during testing) 
 
     • *Save features for testing*
 
@@ -255,13 +222,13 @@ h5py 2.9.0
         python save_features.py --model ResNet10 --method baseline --dataset CropDisease --n_shot 5 --train_aug
     ```
 
-7. Test with saved features (optional, if there is no need to adapt the features during testing) 
+6. Test with saved features (optional, if there is no need to adapt the features during testing) 
 
     ```bash
         python test_with_saved_features.py --model ResNet10 --method baseline --dataset CropDisease --n_shot 5 --train_aug
     ```
 
-8. Test
+7. Test
 
     • *Finetune with frozen model backbone*: 
  
@@ -277,7 +244,7 @@ h5py 2.9.0
     
     • *Example output:* 600 Test Acc = 49.91% +- 0.44%
 
-9. Test with Multi-model selection (make sure you have trained models on all the source domains (miniImageNet, CUB, Caltech256, CIFAR100, DTD))
+8. Test with Multi-model selection (make sure you have trained models on all the source domains (miniImageNet, CUB, Caltech256, CIFAR100, DTD))
 
     • *Test Multi-model selection without fine-tuning*: 
    
@@ -291,9 +258,9 @@ h5py 2.9.0
        python model_selection.py --model ResNet10 --method baseline  --train_aug --n_shot 5 --fine_tune_all_models
      ```
 
-10. For testing your own methods, simply replace the function **finetune()** in `finetune.py` with your own method. Your method should at least have the following arguments,
+9. For testing your own methods, simply replace the function **finetune()** in `finetune.py` with your own method. Your method should at least have the following arguments,
 
-    • *novel_loader: data loader for the corresponding dataset (EuroSAT, ISIC2018, Plant Disease, ChestX-Ray8)*
+    • *novel_loader: data loader for the corresponding dataset (EuroSAT, ISIC2018, Plant Disease, ChestX-Ray8 for track 1)*
 
     • *n_query: number of query images per class*
 
